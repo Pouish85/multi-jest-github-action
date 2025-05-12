@@ -3,38 +3,38 @@ module.exports = {
   env: {
     node: true,
     es6: true,
-    jest: true
+    jest: true,
   },
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: "module",
   },
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
   overrides: [
     {
-      files: ['**/*.ts'],
+      files: ["**/*.ts"],
       extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint',
-        'plugin:jest/recommended'
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint",
+        "plugin:jest/recommended",
       ],
-      plugins: ['@typescript-eslint', 'jest'],
+      plugins: ["@typescript-eslint", "jest"],
       rules: {
-        '@typescript-eslint/explicit-function-return-type': [
-          'warn',
+        "@typescript-eslint/explicit-function-return-type": [
+          "warn",
           {
-            allowExpressions: true
-          }
+            allowExpressions: true,
+          },
         ],
-        '@typescript-eslint/no-unused-vars': 'warn',
-        '@typescript-eslint/no-use-before-define': 'off',
-        'no-console': 'error',
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-use-before-define": "off",
+        "no-console": "error",
         // nededed for mixins to avoid unecessary warnings
-        '@typescript-eslint/no-empty-interface': 'off'
-      }
-    }
-  ]
+        "@typescript-eslint/no-empty-interface": "off",
+      },
+    },
+  ],
 }

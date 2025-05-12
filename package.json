@@ -3,7 +3,9 @@
   "version": "4.0.0",
   "description": "Jest action adding checks to your pull requests",
   "main": "dist/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts",
