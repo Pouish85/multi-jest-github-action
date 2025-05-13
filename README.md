@@ -17,7 +17,7 @@ Main features:
 
 ![Test Failure](assets/annotation.png)
 
-## Check annotations example
+## Check custom names example
 
 ![Custom Name](assets/custom-name.png)
 
