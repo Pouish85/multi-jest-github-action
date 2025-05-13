@@ -24,6 +24,10 @@ inputs:
     description: "if you name your test file other than `jest.results.json`, you can specify the name here"
     required: false
     default: "jest.results.json"
+  result-name:
+    description: "Name of the result file"
+    required: false
+    default: ""
 
 runs:
   using: "node20"

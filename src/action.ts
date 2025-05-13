@@ -34,6 +34,7 @@ export async function run() {
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
+  const resultName = core.getInput("result-name", { required: false })
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -54,7 +55,7 @@ export async function run() {
     const results = parseResults(RESULTS_FILE)
 
     // Checks
-    const checkPayload = getCheckPayload(results, CWD, std)
+    const checkPayload = getCheckPayload(results, CWD, std, resultName)
     await octokit.rest.checks.create(checkPayload)
 
     // Coverage comments
@@ -267,6 +268,7 @@ function getCommentPayload(body: string) {
 function getCheckPayload(
   results: FormattedTestResults,
   cwd: string,
+  resultName: string,
   { out, err }: { out?: string; err?: string },
 ) {
   const payload: RestEndpointMethodTypes["checks"]["create"]["parameters"] = {
@@ -276,7 +278,7 @@ function getCheckPayload(
     status: "completed",
     conclusion: results.success ? "success" : "failure",
     output: {
-      title: results.success ? "Jest tests passed" : "Jest tests failed",
+      title: results.success ? `Jest tests passed ${resultName}` : "Jest tests failed",
       text: truncateRight(`${out ? out : ""}${err ? `\n\n${err}` : ""}`, CHAR_LIMIT),
       summary: results.success
         ? `${results.numPassedTests} tests passing in ${
