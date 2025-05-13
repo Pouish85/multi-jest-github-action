@@ -14,9 +14,9 @@ import {
 import type { FormattedTestResults } from "@jest/test-result/build"
 import * as core from "@actions/core"
 
-const resultName = core.getInput("result-name", { required: false })
-const ACTION_NAME = `jest-github-action-${resultName}`
-const COVERAGE_HEADER = `# :open_umbrella: Code Coverage ${resultName}`
+const testName = core.getInput("test-name", { required: false })
+const ACTION_NAME = `jest-github-action-${testName}`
+const COVERAGE_HEADER = `# :open_umbrella: Code Coverage ${testName}`
 const CHAR_LIMIT = 60000
 
 const rootPath = process.cwd()
@@ -34,12 +34,6 @@ export async function run() {
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
-  // const resultName = core.getInput("result-name", { required: false })
-  console.debug("Results file:", RESULTS_FILE)
-  console.debug("Results file content:", readFileSync(RESULTS_FILE, "utf-8"))
-  console.debug("Working directory:", cwd)
-  console.debug("File name:", fileName)
-  console.debug("CWD:", CWD)
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -48,9 +42,7 @@ export async function run() {
       core.setFailed("GITHUB_TOKEN not set.")
       return
     }
-    core.info(`Reading coverage file: ${RESULTS_FILE}`)
     const cmd = getJestCommand(RESULTS_FILE)
-    console.debug("Jest command:", cmd)
 
     const std = await execJest(cmd, CWD)
 
@@ -59,10 +51,9 @@ export async function run() {
 
     // Parse results
     const results = parseResults(RESULTS_FILE)
-    console.debug("Parsed results:", results)
 
     // Checks
-    const checkPayload = getCheckPayload(results, CWD, resultName, std)
+    const checkPayload = getCheckPayload(results, CWD, testName, std)
     await octokit.rest.checks.create(checkPayload)
 
     // Coverage comments
@@ -220,7 +211,7 @@ export function getCoverageTable(
     return ""
   }
   const covMap = createCoverageMap(results.coverageMap as unknown as CoverageMapData)
-  console.debug("Coverage Map Data:", covMap);
+  console.debug("Coverage Map Data:", covMap)
 
   if (!Object.keys(covMap.data).length) {
     console.error("No entries found in coverage data")
@@ -275,7 +266,7 @@ function getCommentPayload(body: string) {
 function getCheckPayload(
   results: FormattedTestResults,
   cwd: string,
-  resultName: string,
+  testName: string,
   { out, err }: { out?: string; err?: string },
 ) {
   const payload: RestEndpointMethodTypes["checks"]["create"]["parameters"] = {
@@ -285,7 +276,7 @@ function getCheckPayload(
     status: "completed",
     conclusion: results.success ? "success" : "failure",
     output: {
-      title: results.success ? `Jest tests passed ${resultName}` : "Jest tests failed",
+      title: results.success ? `Jest tests passed ${testName}` : "Jest tests failed",
       text: truncateRight(`${out ? out : ""}${err ? `\n\n${err}` : ""}`, CHAR_LIMIT),
       summary: results.success
         ? `${results.numPassedTests} tests passing in ${
