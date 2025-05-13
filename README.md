@@ -4,6 +4,8 @@ Main features:
 
 - Add status checks with code annotations to your pull requests
 - Comment your pull requests with code coverage table (if tests succeeded)
+- If you use multiple jest results files, you can specify which one to use
+- You can add a custom name to the PR comment and actions job
 
 ## Coverage example
 
@@ -15,12 +17,16 @@ Main features:
 
 ![Test Failure](assets/annotation.png)
 
+## Check custom names example
+
+![Custom Name](assets/custom-name.png)
+
 ## Usage
 
-You can now consume the action by referencing the v4 branch
+
 
 ```yaml
-uses: willcaul/jest-github-action@v4
+uses: Pouish85/jest-github-action
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -31,7 +37,7 @@ By default, this action will execute `npm test` to run your tests.
 You can change this behavior by providing a custom `test-command` like this:
 
 ```yaml
-uses: willcaul/jest-github-action@v4
+uses: Pouish85/jest-github-action
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -42,7 +48,7 @@ with:
 ### Running tests only on changed files
 
 ```yaml
-uses: willcaul/jest-github-action@v4
+uses: Pouish85/jest-github-action
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -54,7 +60,7 @@ with:
 ### Silencing the code coverage comment
 
 ```yaml
-uses: willcaul/jest-github-action@v4
+uses: Pouish85/jest-github-action
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -67,13 +73,33 @@ with:
 For running tests in folders other than root, supply a working-directory.
 
 ```yaml
-uses: willcaul/jest-github-action@v4
+uses: Pouish85/jest-github-action
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
   working-directory: "frontend"
 ```
 
+### Specifying the jest results file
+
+```yaml
+uses: Pouish85/jest-github-action
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+with:
+  file-name: your.file.name
+```
+
+### Adding a custom name to the PR comment and actions job
+
+```yaml
+uses: Pouish85/jest-github-action
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+with:
+  test-name: "Your custom name"
+```
+
 ## Credits
 
-Thanks to [mattallty/jest-github-action](https://github.com/mattallty/jest-github-action), which this package is forked from, as well as [FirmNav/jest-code-coverage-commenter](https://github.com/FirmNav/jest-code-coverage-commenter), which was used as a reference for the coverage comment format.
+Thanks to [willcaul/jest-github-action](https://github.com/willcaul/jest-github-action), which this package is forked from, as well as [mattallty/jest-github-action](https://github.com/mattallty/jest-github-action) and [FirmNav/jest-code-coverage-commenter](https://github.com/FirmNav/jest-code-coverage-commenter), which was used as a reference for the coverage comment format.

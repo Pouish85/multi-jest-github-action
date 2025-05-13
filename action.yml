@@ -20,6 +20,14 @@ inputs:
     description: "Only run tests on changed files (over base branch)"
     required: false
     default: "false"
+  file-name:
+    description: "if you named your test file other than `jest.results.json`, you can specify the name here"
+    required: false
+    default: "jest.results.json"
+  test-name:
+    description: "Name of your test to be displayed in the PR"
+    required: false
+    default: ""
 
 runs:
   using: "node20"
