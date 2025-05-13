@@ -36,6 +36,7 @@ export async function run() {
   const RESULTS_FILE = join(CWD, fileName)
   // const resultName = core.getInput("result-name", { required: false })
   console.debug("Results file:", RESULTS_FILE)
+  console.debug("Results file content:", readFileSync(RESULTS_FILE, "utf-8"))
   console.debug("Working directory:", cwd)
   console.debug("File name:", fileName)
   console.debug("CWD:", CWD)
@@ -49,6 +50,7 @@ export async function run() {
     }
     core.info(`Reading coverage file: ${RESULTS_FILE}`)
     const cmd = getJestCommand(RESULTS_FILE)
+    console.debug("Jest command:", cmd)
 
     const std = await execJest(cmd, CWD)
 
@@ -57,6 +59,7 @@ export async function run() {
 
     // Parse results
     const results = parseResults(RESULTS_FILE)
+    console.debug("Parsed results:", results)
 
     // Checks
     const checkPayload = getCheckPayload(results, CWD, resultName, std)
