@@ -1,7 +1,6 @@
 import path, { sep, join, resolve } from "path"
 import { readFileSync } from "fs"
 import { exec } from "@actions/exec"
-import * as core from "@actions/core"
 import { getOctokit, context } from "@actions/github"
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods"
 import flatMap from "lodash/flatMap"
@@ -16,7 +15,8 @@ import type { FormattedTestResults } from "@jest/test-result/build"
 import * as core from "@actions/core"
 
 const ACTION_NAME = "jest-github-action"
-const COVERAGE_HEADER = "# :open_umbrella: Code Coverage"
+const resultName = core.getInput("result-name", { required: false })
+const COVERAGE_HEADER = `# :open_umbrella: Code Coverage ${resultName}`
 const CHAR_LIMIT = 60000
 
 const rootPath = process.cwd()
@@ -34,7 +34,7 @@ export async function run() {
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
-  const resultName = core.getInput("result-name", { required: false })
+  // const resultName = core.getInput("result-name", { required: false })
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -55,7 +55,7 @@ export async function run() {
     const results = parseResults(RESULTS_FILE)
 
     // Checks
-    const checkPayload = getCheckPayload(results, CWD, std, resultName)
+    const checkPayload = getCheckPayload(results, CWD, resultName, std)
     await octokit.rest.checks.create(checkPayload)
 
     // Coverage comments
@@ -213,7 +213,7 @@ export function getCoverageTable(
     return ""
   }
   const covMap = createCoverageMap(results.coverageMap as unknown as CoverageMapData)
-  core.debug("Coverage Map Data:", covMap);
+  console.debug("Coverage Map Data:", covMap);
 
   if (!Object.keys(covMap.data).length) {
     console.error("No entries found in coverage data")
