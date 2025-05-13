@@ -14,8 +14,8 @@ import {
 import type { FormattedTestResults } from "@jest/test-result/build"
 import * as core from "@actions/core"
 
-const ACTION_NAME = "jest-github-action"
 const resultName = core.getInput("result-name", { required: false })
+const ACTION_NAME = `jest-github-action-${resultName}`
 const COVERAGE_HEADER = `# :open_umbrella: Code Coverage ${resultName}`
 const CHAR_LIMIT = 60000
 
@@ -35,6 +35,10 @@ export async function run() {
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
   // const resultName = core.getInput("result-name", { required: false })
+  console.debug("Results file:", RESULTS_FILE)
+  console.debug("Working directory:", cwd)
+  console.debug("File name:", fileName)
+  console.debug("CWD:", CWD)
 
   try {
     const token = process.env.GITHUB_TOKEN
