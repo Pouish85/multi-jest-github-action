@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/willcaul/jest-github-action.git"
+    "url": "git+https://github.com/pouish85/jest-github-action.git"
   },
   "keywords": [
     "GitHub",
@@ -25,12 +25,12 @@
     "Jest",
     "Pull request"
   ],
-  "author": "Will Caulfield <willcaul@outlook.com>",
+  "author": "Pouish85",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/willcaul/jest-github-action/issues"
+    "url": "https://github.com/pouish85/jest-github-action/issues"
   },
-  "homepage": "https://github.com/willcaul/jest-github-action",
+  "homepage": "https://github.com/pouish85/jest-github-action",
   "jest": {
     "clearMocks": true,
     "moduleFileExtensions": [
