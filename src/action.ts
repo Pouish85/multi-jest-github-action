@@ -13,6 +13,7 @@ import {
   CoverageSummary,
 } from "istanbul-lib-coverage"
 import type { FormattedTestResults } from "@jest/test-result/build"
+import * as core from "@actions/core"
 
 const ACTION_NAME = "jest-github-action"
 const COVERAGE_HEADER = "# :open_umbrella: Code Coverage"
@@ -211,6 +212,7 @@ export function getCoverageTable(
     return ""
   }
   const covMap = createCoverageMap(results.coverageMap as unknown as CoverageMapData)
+  core.debug("Coverage Map Data:", covMap);
 
   if (!Object.keys(covMap.data).length) {
     console.error("No entries found in coverage data")
