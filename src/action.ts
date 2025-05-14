@@ -36,8 +36,8 @@ export async function run() {
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
   const CONFIG_FILE = join(CWD, configFile)
-  // console.debug("File Name:", fileName)
-  // console.debug("Config File:", configFile)
+  console.debug("File Name:", fileName)
+  console.debug("Config File:", configFile)
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -48,7 +48,7 @@ export async function run() {
     }
     const cmd = getJestCommand(RESULTS_FILE, CONFIG_FILE)
 
-    // console.debug("Generated Jest Command:", cmd)
+    console.debug("Generated Jest Command:", cmd)
 
     const std = await execJest(cmd, CWD)
 
@@ -58,7 +58,7 @@ export async function run() {
     // Parse results
     console.debug("Parsing results file:", RESULTS_FILE);
     const results = parseResults(RESULTS_FILE);
-    // console.debug("Parsed results:", results);
+    console.debug("Parsed results:", results);
     console.debug("Pull Request ID:", getPullId());
 
     // Checks
