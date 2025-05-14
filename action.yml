@@ -20,6 +20,10 @@ inputs:
     description: "Only run tests on changed files (over base branch)"
     required: false
     default: "false"
+  config-file-name:
+    description: "if you named your config file other than `jest.config.ts`, you can specify the name here"
+    required: false
+    default: "jest.config.ts"
   file-name:
     description: "if you named your test file other than `jest.results.json`, you can specify the name here"
     required: false

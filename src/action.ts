@@ -31,6 +31,7 @@ type File = {
 export async function run() {
   const workingDirectory = core.getInput("working-directory", { required: false })
   const fileName = core.getInput("file-name", { required: false })
+  const configFile = core.getInput("config-file", { required: false })
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
@@ -42,7 +43,7 @@ export async function run() {
       core.setFailed("GITHUB_TOKEN not set.")
       return
     }
-    const cmd = getJestCommand(RESULTS_FILE)
+    const cmd = getJestCommand(RESULTS_FILE, configFile)
 
     const std = await execJest(cmd, CWD)
 
@@ -290,7 +291,7 @@ function getCheckPayload(
   return payload
 }
 
-function getJestCommand(resultsFile: string) {
+function getJestCommand(resultsFile: string, configFile: string): string {
   let cmd = core.getInput("test-command", { required: false })
   const jestOptions = `--testLocationInResults --json ${
     shouldCommentCoverage() ? "--coverage" : ""
@@ -298,7 +299,7 @@ function getJestCommand(resultsFile: string) {
     shouldRunOnlyChangedFiles() && context.payload.pull_request?.base.ref
       ? "--changedSince=" + context.payload.pull_request?.base.ref
       : ""
-  } --outputFile=${resultsFile}`
+  } --outputFile=${resultsFile} ${configFile ? `--config=${configFile}` : ""}`
   const shouldAddHyphen =
     cmd.startsWith("npm") ||
     cmd.startsWith("npx") ||
