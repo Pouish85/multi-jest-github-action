@@ -28,7 +28,7 @@ type File = {
   coverage: CoverageSummary
 }
 
-export async function run() {
+export async function run(): Promise<void> {
   const workingDirectory = core.getInput("working-directory", { required: false })
   const fileName = core.getInput("file-name", { required: false })
   const configFile = core.getInput("config-file-name", { required: false })
@@ -46,14 +46,13 @@ export async function run() {
     }
     const cmd = getJestCommand(RESULTS_FILE, CONFIG_FILE)
 
-
     const std = await execJest(cmd, CWD)
 
     // octokit
     const octokit = getOctokit(token)
 
     // Parse results
-    const results = parseResults(RESULTS_FILE);
+    const results = parseResults(RESULTS_FILE)
 
     // Checks
     const checkPayload = getCheckPayload(results, CWD, testName, std)
@@ -63,7 +62,7 @@ export async function run() {
     if (getPullId() && shouldCommentCoverage()) {
       const comment = getCoverageTable(results, CWD)
       if (comment) {
-        // await deletePreviousComments(octokit)
+        await deletePreviousComments(octokit)
         const commentPayload = getCommentPayload(comment)
         await octokit.rest.issues.createComment(commentPayload)
       }
