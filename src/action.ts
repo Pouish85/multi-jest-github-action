@@ -31,7 +31,7 @@ type File = {
 export async function run() {
   const workingDirectory = core.getInput("working-directory", { required: false })
   const fileName = core.getInput("file-name", { required: false })
-  const configFile = core.getInput("config-file", { required: false })
+  const configFile = core.getInput("config-file-name", { required: false })
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
