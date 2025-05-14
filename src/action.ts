@@ -327,8 +327,6 @@ function parseResults(resultsFile: string): FormattedTestResults {
 async function execJest(cmd: string, cwd?: string) {
   let out = Buffer.concat([], 0)
   let err = Buffer.concat([], 0)
-  console.debug("Jest stdout:", out.toString());
-  console.debug("Jest stderr:", err.toString());
 
   try {
     const options: Parameters<typeof exec>[2] = {
@@ -344,11 +342,12 @@ async function execJest(cmd: string, cwd?: string) {
       },
     }
     await exec(cmd, [], options)
-
-    console.debug("Jest command executed")
   } catch (e) {
     console.error("Jest execution failed. Tests have likely failed.", e)
   }
+
+  console.debug("Jest stdout:", out.toString())
+  console.debug("Jest stderr:", err.toString())
 
   return { out: out.toString(), err: err.toString() }
 }
