@@ -4,6 +4,7 @@ Main features:
 
 - Add status checks with code annotations to your pull requests
 - Comment your pull requests with code coverage table (if tests succeeded)
+- If you use multiple jest config files, you can specify which one to use
 - If you use multiple jest results files, you can specify which one to use
 - You can add a custom name to the PR comment and actions job
 
@@ -78,6 +79,16 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
   working-directory: "frontend"
+```
+
+### Specifying the jest config file
+
+```yaml
+uses: Pouish85/jest-github-action
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+with:
+  config-file-name: your.config-file.name
 ```
 
 ### Specifying the jest results file
