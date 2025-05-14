@@ -59,6 +59,7 @@ export async function run() {
     console.debug("Parsing results file:", RESULTS_FILE);
     const results = parseResults(RESULTS_FILE);
     console.debug("Parsed results:", results);
+    console.debug("Pull Request ID:", getPullId());
 
     // Checks
     const checkPayload = getCheckPayload(results, CWD, testName, std)
@@ -67,9 +68,11 @@ export async function run() {
     // Coverage comments
     if (getPullId() && shouldCommentCoverage()) {
       const comment = getCoverageTable(results, CWD)
+      console.debug("Generated Comment:", comment);
       if (comment) {
         // await deletePreviousComments(octokit)
         const commentPayload = getCommentPayload(comment)
+        console.debug("Comment Payload:", commentPayload)
         await octokit.rest.issues.createComment(commentPayload)
       }
     }
