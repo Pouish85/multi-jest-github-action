@@ -28,12 +28,14 @@ type File = {
   coverage: CoverageSummary
 }
 
-export async function run() {
+export async function run(): Promise<void> {
   const workingDirectory = core.getInput("working-directory", { required: false })
   const fileName = core.getInput("file-name", { required: false })
+  const configFile = core.getInput("config-file-name", { required: false })
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
+  const CONFIG_FILE = join(CWD, configFile)
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -42,7 +44,7 @@ export async function run() {
       core.setFailed("GITHUB_TOKEN not set.")
       return
     }
-    const cmd = getJestCommand(RESULTS_FILE)
+    const cmd = getJestCommand(RESULTS_FILE, CONFIG_FILE)
 
     const std = await execJest(cmd, CWD)
 
@@ -211,7 +213,6 @@ export function getCoverageTable(
     return ""
   }
   const covMap = createCoverageMap(results.coverageMap as unknown as CoverageMapData)
-  console.debug("Coverage Map Data:", covMap)
 
   if (!Object.keys(covMap.data).length) {
     console.error("No entries found in coverage data")
@@ -290,7 +291,7 @@ function getCheckPayload(
   return payload
 }
 
-function getJestCommand(resultsFile: string) {
+function getJestCommand(resultsFile: string, configFile: string): string {
   let cmd = core.getInput("test-command", { required: false })
   const jestOptions = `--testLocationInResults --json ${
     shouldCommentCoverage() ? "--coverage" : ""
@@ -298,7 +299,7 @@ function getJestCommand(resultsFile: string) {
     shouldRunOnlyChangedFiles() && context.payload.pull_request?.base.ref
       ? "--changedSince=" + context.payload.pull_request?.base.ref
       : ""
-  } --outputFile=${resultsFile}`
+  } --outputFile=${resultsFile} ${configFile ? `--config=${configFile}` : ""}`
   const shouldAddHyphen =
     cmd.startsWith("npm") ||
     cmd.startsWith("npx") ||
@@ -330,8 +331,6 @@ async function execJest(cmd: string, cwd?: string) {
       },
     }
     await exec(cmd, [], options)
-
-    console.debug("Jest command executed")
   } catch (e) {
     console.error("Jest execution failed. Tests have likely failed.", e)
   }
