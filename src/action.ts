@@ -36,6 +36,8 @@ export async function run() {
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
   const CONFIG_FILE = join(CWD, configFile)
+  console.debug("File Name:", fileName)
+  console.debug("Config File:", configFile)
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -45,6 +47,8 @@ export async function run() {
       return
     }
     const cmd = getJestCommand(RESULTS_FILE, CONFIG_FILE)
+
+    console.debug("Generated Jest Command:", cmd)
 
     const std = await execJest(cmd, CWD)
 
