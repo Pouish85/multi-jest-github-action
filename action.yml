@@ -1,5 +1,5 @@
 name: "Multi Jest GitHub Action"
-description: "Jest action adding checks and annotations to your pull requests and comment them with code coverage results when using multiple jest configuration files."
+description: "Adds checks, annotations, and coverage comments to PRs with multiple Jest config files."
 branding:
   icon: "check"
   color: "green"
