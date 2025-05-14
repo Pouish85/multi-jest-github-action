@@ -35,6 +35,7 @@ export async function run() {
   const cwd = workingDirectory ? resolve(workingDirectory) : process.cwd()
   const CWD = cwd + sep
   const RESULTS_FILE = join(CWD, fileName)
+  const CONFIG_FILE = join(CWD, configFile)
 
   try {
     const token = process.env.GITHUB_TOKEN
@@ -43,7 +44,7 @@ export async function run() {
       core.setFailed("GITHUB_TOKEN not set.")
       return
     }
-    const cmd = getJestCommand(RESULTS_FILE, configFile)
+    const cmd = getJestCommand(RESULTS_FILE, CONFIG_FILE)
 
     const std = await execJest(cmd, CWD)
 
