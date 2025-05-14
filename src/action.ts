@@ -58,7 +58,7 @@ export async function run() {
     // Parse results
     console.debug("Parsing results file:", RESULTS_FILE);
     const results = parseResults(RESULTS_FILE);
-    console.debug("Parsed results:", results);
+    // console.debug("Parsed results:", results);
     console.debug("Pull Request ID:", getPullId());
 
     // Checks
@@ -327,6 +327,8 @@ function parseResults(resultsFile: string): FormattedTestResults {
 async function execJest(cmd: string, cwd?: string) {
   let out = Buffer.concat([], 0)
   let err = Buffer.concat([], 0)
+  console.debug("Jest stdout:", out.toString());
+  console.debug("Jest stderr:", err.toString());
 
   try {
     const options: Parameters<typeof exec>[2] = {
