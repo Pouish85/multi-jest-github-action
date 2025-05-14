@@ -68,7 +68,7 @@ export async function run() {
     if (getPullId() && shouldCommentCoverage()) {
       const comment = getCoverageTable(results, CWD)
       if (comment) {
-        await deletePreviousComments(octokit)
+        // await deletePreviousComments(octokit)
         const commentPayload = getCommentPayload(comment)
         await octokit.rest.issues.createComment(commentPayload)
       }
