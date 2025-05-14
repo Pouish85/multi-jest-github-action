@@ -56,7 +56,9 @@ export async function run() {
     const octokit = getOctokit(token)
 
     // Parse results
-    const results = parseResults(RESULTS_FILE)
+    console.debug("Parsing results file:", RESULTS_FILE);
+    const results = parseResults(RESULTS_FILE);
+    console.debug("Parsed results:", results);
 
     // Checks
     const checkPayload = getCheckPayload(results, CWD, testName, std)
