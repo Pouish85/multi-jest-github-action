@@ -1,7 +1,7 @@
 {
   "name": "multi-jest-github-action",
   "version": "1.1.0",
-  "description": "Jest action adding checks to your pull requests when you use multiple jest config files",
+  "description": "Jest action adding checks to your pull requests when you use multiple jest config files.",
   "main": "dist/index.js",
   "files": [
     "dist"
