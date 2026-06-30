@@ -24,10 +24,8 @@ Main features:
 
 ## Usage
 
-
-
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -38,7 +36,7 @@ By default, this action will execute `npm test` to run your tests.
 You can change this behavior by providing a custom `test-command` like this:
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -49,7 +47,7 @@ with:
 ### Running tests only on changed files
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -61,7 +59,7 @@ with:
 ### Silencing the code coverage comment
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -74,7 +72,7 @@ with:
 For running tests in folders other than root, supply a working-directory.
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -84,7 +82,7 @@ with:
 ### Specifying the jest config file
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -94,7 +92,7 @@ with:
 ### Specifying the jest results file
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:
@@ -104,7 +102,7 @@ with:
 ### Adding a custom name to the PR comment and actions job
 
 ```yaml
-uses: Pouish85/multi-jest-github-action@v1.0.0
+uses: Pouish85/multi-jest-github-action@v1.1.0
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 with:

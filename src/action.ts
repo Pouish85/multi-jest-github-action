@@ -69,6 +69,16 @@ export async function run(): Promise<void> {
     }
 
     if (!results.success) {
+      if (
+        std.out.includes("coverage threshold") ||
+        std.err.includes("coverage threshold")
+      ) {
+        core.setFailed(
+          "❌ Failed : Code coverage does not meet the configured minimum thresholds.",
+        )
+      } else {
+        core.setFailed("❌ Failed : Some jest tests failed.")
+      }
       core.setFailed("Some jest tests failed.")
     }
   } catch (error) {
