@@ -13,6 +13,7 @@ import {
 } from "istanbul-lib-coverage"
 import type { FormattedTestResults } from "@jest/test-result/build"
 import * as core from "@actions/core"
+import { existsSync } from "fs"
 
 const testName = core.getInput("test-name", { required: false })
 const ACTION_NAME = `jest-github-action-${testName}`
@@ -47,6 +48,13 @@ export async function run(): Promise<void> {
     const cmd = getJestCommand(RESULTS_FILE, CONFIG_FILE)
 
     const std = await execJest(cmd, CWD)
+
+    if (!existsSync(RESULTS_FILE)) {
+      core.setFailed(
+        `❌ Failed: Jest results file (${fileName}) not found. Jest likely failed before generating the report.`,
+      )
+      return
+    }
 
     // octokit
     const octokit = getOctokit(token)
@@ -88,18 +96,22 @@ export async function run(): Promise<void> {
 }
 
 async function deletePreviousComments(octokit: ReturnType<typeof getOctokit>) {
+  type IssueComment =
+    RestEndpointMethodTypes["issues"]["listComments"]["response"]["data"][number]
+
   const { data } = await octokit.rest.issues.listComments({
     ...context.repo,
     per_page: 100,
     issue_number: getPullId(),
   })
+
   return Promise.all(
     data
       .filter(
-        (c) =>
+        (c: IssueComment) =>
           c.user?.login === "github-actions[bot]" && c.body?.startsWith(COVERAGE_HEADER),
       )
-      .map((c) =>
+      .map((c: IssueComment) =>
         octokit.rest.issues.deleteComment({ ...context.repo, comment_id: c.id }),
       ),
   )
